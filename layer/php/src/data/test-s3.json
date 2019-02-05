@@ -1,0 +1,45 @@
+{
+    "_id": "5c426e79bcf9257e61279f08",
+    "index": 0,
+    "guid": "404aa0c5-4783-4904-918c-dfe4ac83fb4f",
+    "isActive": false,
+    "balance": "$3,249.61",
+    "picture": "http://placehold.it/32x32",
+    "age": 30,
+    "eyeColor": "green",
+    "name": "Miriam Bush",
+    "gender": "female",
+    "company": "REVERSUS",
+    "email": "miriambush@reversus.com",
+    "phone": "+1 (923) 592-2285",
+    "address": "281 Bouck Court, Alamo, Hawaii, 7023",
+    "about": "Amet deserunt velit aliquip ullamco sit laboris nisi magna cillum minim. Elit sunt ad excepteur quis aliqua officia. Sint aute eiusmod adipisicing quis aliquip. Qui aliqua officia laborum irure commodo proident aute cillum aute officia id. Sunt eu commodo culpa exercitation consectetur incididunt consectetur magna dolor excepteur excepteur non eu esse. In est velit proident magna. Fugiat anim voluptate laborum deserunt adipisicing eu.\r\n",
+    "registered": "2016-11-22T04:17:36 -01:00",
+    "latitude": -26.12629,
+    "longitude": -22.943417,
+    "tags": [
+        "est",
+        "cillum",
+        "adipisicing",
+        "reprehenderit",
+        "reprehenderit",
+        "et",
+        "nulla"
+    ],
+    "friends": [
+        {
+            "id": 0,
+            "name": "Jackie Woodward"
+        },
+        {
+            "id": 1,
+            "name": "Sara Ellison"
+        },
+        {
+            "id": 2,
+            "name": "Rosalind Pierce"
+        }
+    ],
+    "greeting": "Hello, Miriam Bush! You have 3 unread messages.",
+    "favoriteFruit": "strawberry"
+}

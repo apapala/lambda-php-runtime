@@ -1,0 +1,47 @@
+version: '3.5'
+
+services:
+
+    lambdaphp_php:
+        container_name: lambdaphp_php
+        hostname: lambdaphp_php
+        build: ./docker/php
+        user: root
+        volumes:
+            - ./:/var/www/html
+            - ./docker:/var/docker/
+            - ./docker/php/hosts.conf:/etc/apache2/sites-enabled/hosts.conf
+            - ./docker/php/php-client.ini:/usr/local/etc/php/conf.d/php-client.ini
+            - ./docker/php/ssmtp.conf:/etc/ssmtp/ssmtp.conf
+        external_links:
+#            - mailcatcher
+            - redis
+            - nginx-proxy
+#        links:
+#            - lambdaphp_mysql
+        networks:
+            - dev_env
+            - lambdaphp_env
+        environment:
+            - VIRTUAL_HOST=lambdaphp.local # For reverse-proxy
+
+#    lambdaphp_mysql:
+#        container_name: lambdaphp_mysql
+#        image: mysql
+#        hostname: lambdaphp_mysql
+#        environment:
+#            - MYSQL_ROOT_PASSWORD=root
+#            - MYSQL_USER=root
+#            - MYSQL_PASSWORD=root
+#            - MYSQL_DATABASE=lambdaphp_01
+#        volumes:
+#            # - ./docker/database:/docker-entrypoint-initdb.d # docker output for running mysqls
+#            - ./docker/var/lib/mysql:/var/lib/mysql # databases files
+#        networks:
+#            - lambdaphp_env
+
+networks:
+    dev_env:
+        external: true
+    lambdaphp_env:
+        name: lambdaphp_env

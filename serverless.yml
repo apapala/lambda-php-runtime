@@ -1,0 +1,16 @@
+service: lambda-php
+provider:
+  name: aws
+  runtime: provided
+  region: us-east-1
+  memorySize: 128
+
+layers:
+  php:
+    path: layer/php
+
+functions:
+  hello_2:
+    handler: src/handler.handler
+    layers:
+      - {Ref: PhpLambdaLayer}

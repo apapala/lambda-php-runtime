@@ -1,0 +1,7 @@
+/.idea
+
+.serverless
+.env
+
+vendor
+node_modules

@@ -1,0 +1,21 @@
+{
+    "name": "apapala/lambda-php-example",
+    "description": "This is lambda with PHP runtime environment",
+    "authors": [
+        {
+            "name": "apapala",
+            "email": "apapala.dev@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "LambdaPHP\\": "src/"
+        }
+    },
+    "require": {
+        "guzzlehttp/guzzle": "^6.3",
+        "aws/aws-sdk-php": "^3.85",
+        "symfony/dotenv": "^4.2",
+        "ramsey/uuid": "^3.8"
+    }
+}
