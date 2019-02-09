@@ -1,9 +1,9 @@
 <?php
 
-namespace LambdaPHP\LambdaFunction;
+namespace LambdaPHP;
 
 use Aws\Sdk;
-use LambdaPHP\AwsLambdaExamples;
+use LambdaPHP\LambdaFunction\FunctionInterface;
 
 class LocalFunction implements FunctionInterface {
 
@@ -31,6 +31,8 @@ class LocalFunction implements FunctionInterface {
         $awsLambdaExamples = new AwsLambdaExamples($awsSdk, $this->getRequest());
         // $awsLambdaExamples->runExamples();
         $awsLambdaExamples->lambdaSendPayload();
+
+        $this->addToResponse($awsLambdaExamples->getResponse());
 
         return $awsLambdaExamples->getResponse();
     }

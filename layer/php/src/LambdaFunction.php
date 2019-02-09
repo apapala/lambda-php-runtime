@@ -1,7 +1,9 @@
-<?php namespace LambdaPHP\LambdaFunction;
+<?php
+
+namespace LambdaPHP;
 
 use Aws\Sdk;
-use LambdaPHP\AwsLambdaExamples;
+use LambdaPHP\LambdaFunction\FunctionInterface;
 
 class LambdaFunction implements FunctionInterface {
 

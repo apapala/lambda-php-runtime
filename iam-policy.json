@@ -11,11 +11,13 @@
                 "cloudformation:DescribeStackResource",
                 "cloudformation:ValidateTemplate",
                 "cloudformation:UpdateStack",
+                "cloudformation:DeleteStack",
                 "s3:ListBucket",
                 "s3:PutObject",
                 "s3:GetObject",
                 "s3:CreateBucket",
                 "s3:DeleteBucket",
+                "s3:DeleteObject",
                 "lambda:InvokeFunction",
                 "lambda:PublishLayerVersion",
                 "lambda:GetFunction",
@@ -29,10 +31,13 @@
                 "lambda:DeleteFunction",
                 "logs:DescribeLogGroups",
                 "logs:CreateLogGroup",
+                "logs:DeleteLogGroup",
                 "iam:GetRole",
                 "iam:CreateRole",
                 "iam:PutRolePolicy",
-                "iam:PassRole"
+                "iam:PassRole",
+                "iam:DeleteRolePolicy",
+                "iam:DeleteRole"
             ],
             "Resource": [
                 "*"

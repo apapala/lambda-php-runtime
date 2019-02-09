@@ -6,6 +6,7 @@ use Aws\DynamoDb\DynamoDbClient;
 use Aws\DynamoDb\Exception\DynamoDbException;
 use Aws\DynamoDb\Marshaler;
 use Aws\Sdk;
+use InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
 
 class AwsLambdaExamples {
@@ -117,6 +118,7 @@ class AwsLambdaExamples {
                 'year' => $year,
                 'title' => $title,
                 'info' => $info,
+                'createdAt' => date("Y-m-d H:i:s")
             ]);
 
             $params = [
@@ -141,6 +143,10 @@ class AwsLambdaExamples {
 
     public function lambdaSendPayload()
     {
+        if (false === getenv('AWS_LAMBDA_FUNCTION_NAME')) {
+            throw new InvalidArgumentException();
+        }
+
         $lambdaClient = $this->sdk->createLambda([
             'credentials' => [
                 'key'    => getenv('AWS_ACCESS_KEY'),
@@ -150,12 +156,17 @@ class AwsLambdaExamples {
 
         $movieData = file_get_contents(__DIR__ . '/data/moviedata.json');
 
-        $result = $lambdaClient->invoke([
-                'FunctionName' => 'lambda-php-dev-hello_2',
+        try {
+            $result = $lambdaClient->invoke([
+                'FunctionName' => getenv('AWS_LAMBDA_FUNCTION_NAME'),
                 // 'InvocationType' => 'RequestResponse',
                 'Payload' => $movieData
-        ]);
+            ]);
 
-        $this->addToResponse($result);
+            $this->addToResponse($result);
+        } catch (\Exception $exception) {
+
+            $this->addToResponse("There was an error: " . $exception->getMessage());
+        }
     }
 }

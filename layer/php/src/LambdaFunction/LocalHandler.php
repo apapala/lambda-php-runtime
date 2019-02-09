@@ -1,15 +1,12 @@
 <?php
 
-namespace LambdaPHP;
+namespace LambdaPHP\LambdaFunction;
 
-use Aws\Sdk;
-use LambdaPHP\LambdaFunction\FunctionInterface;
 
-class Handler {
-
+class LocalHandler implements FunctionHandlerInterface
+{
     public function run(FunctionInterface $function)
     {
         $function->invoke();
     }
 }
-
