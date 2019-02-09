@@ -1,8 +1,8 @@
 <?php
 
-use GuzzleHttp\Client;
 use LambdaPHP\LambdaFunction;
 use LambdaPHP\LambdaFunction\LambdaHandler;
+use LambdaPHP\LambdaFunction\LambdaRuntime;
 use Symfony\Component\Dotenv\Dotenv;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -10,35 +10,13 @@ require __DIR__ . '/../vendor/autoload.php';
 $dotenv = new Dotenv();
 $dotenv->load(__DIR__ . '/../.env');
 
-function getNextRequest()
-{
-    $client = new Client();
-    $response = $client->get('http://' . $_ENV['AWS_LAMBDA_RUNTIME_API'] . '/2018-06-01/runtime/invocation/next');
-
-    return [
-        'code' => $response->getStatusCode(),
-        'invocationId' => $response->getHeader('Lambda-Runtime-Aws-Request-Id')[0],
-        'payload' => json_decode((string) $response->getBody(), true)
-    ];
-}
-
-function sendResponse($invocationId, $response)
-{
-    $client = new Client();
-    $client->post(
-        'http://' . $_ENV['AWS_LAMBDA_RUNTIME_API'] . '/2018-06-01/runtime/invocation/' . $invocationId . '/response',
-        [
-            'form_params' => [
-                'body' => $response
-            ]
-        ]
-    );
-}
-
 // This is the request processing loop. Barring unrecoverable failure, this loop runs until the environment shuts down.
 do {
+
+    $runtime = new LambdaRuntime();
+
     // Ask the runtime API for a request to handle.
-    $request = getNextRequest();
+    $request = $runtime->getNextRequest();
 
     $output['_HANDLER'] = $_ENV['_HANDLER'];
     $output['env'] = $_ENV;
@@ -63,5 +41,5 @@ do {
     $output['response'] = $response;
 
     // Submit the response back to the runtime API.
-    sendResponse($request['invocationId'], $output);
+    $runtime->sendResponse($request['invocationId'], $output);
 } while (true);

@@ -52,6 +52,7 @@ class LambdaFunction implements FunctionInterface {
 
         $awsLambdaExamples = new AwsLambdaExamples($awsSdk, $this->getRequest());
         $awsLambdaExamples->dynamoDbPutObjectFromPayload($this->getPayload());
+        $awsLambdaExamples->s3PutObject();
 
         $this->addToResponse($awsLambdaExamples->getResponse());
     }

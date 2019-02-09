@@ -5,6 +5,7 @@ namespace LambdaPHP;
 use Aws\DynamoDb\DynamoDbClient;
 use Aws\DynamoDb\Exception\DynamoDbException;
 use Aws\DynamoDb\Marshaler;
+use Aws\Lambda\LambdaClient;
 use Aws\Sdk;
 use InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
@@ -27,11 +28,19 @@ class AwsLambdaExamples {
     private $dynamoDbClient;
 
     /**
-     * @var DynamoDbClient
+     * @var []
      */
     private $response = [];
 
+    /**
+     * @var Sdk
+     */
     private $sdk;
+
+    /**
+     * @var LambdaClient
+     */
+    private $lambdaClient;
 
     public function __construct(Sdk $sdk, $request = null) {
 
@@ -57,32 +66,56 @@ class AwsLambdaExamples {
                 'secret' => getenv('AWS_SECRET'),
             ]
         ]);
+
+        $this->lambdaClient = $this->sdk->createLambda([
+            'credentials' => [
+                'key'    => getenv('AWS_ACCESS_KEY'),
+                'secret' => getenv('AWS_SECRET'),
+            ]
+        ]);
     }
 
-    public function runExamples()
+    public function runLocalExamples()
     {
         $this->s3PutObject();
-        $this->dynamoDbPutObject(file_get_contents(__DIR__ . '/data/moviedata.json'));
+        $this->dynamoDbPutObject(json_decode(file_get_contents(__DIR__ . '/data/moviedata.json'), true));
 
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @param string|array $env
+     */
+    private function checkEnv($env)
+    {
+        if (is_string($env)) {
+            $env = [$env];
+        }
+
+        foreach ($env as $value) {
+            if (false === getenv($value)) {
+                throw new InvalidArgumentException();
+            }
+        }
     }
 
     public function s3PutObject() {
 
-        $response = $this->s3Client->putObject([
-            'Bucket' => getenv('AWS_BUCKET_NAME'),
-            'Key' => 'test-s3.json',
-            'Body' => __DIR__ . '/data/test-s3.json'
-        ]);
+        $this->checkEnv('AWS_BUCKET_NAME');
 
-        $this->addToResponse($response);
+        try {
 
-        $response = $this->s3Client->putObject([
-            'Bucket' => getenv('AWS_BUCKET_NAME'),
-            'Key' => 'test-s3.json',
-            'Body' => __DIR__ . '/data/horseshoe.jpg'
-        ]);
+            $response = $this->s3Client->putObject([
+                'Bucket' => getenv('AWS_BUCKET_NAME'),
+                'Key' => 'test-s3.json',
+                'Body' => __DIR__ . '/data/test-s3.json'
+            ]);
 
-        $this->addToResponse($response);
+            $this->addToResponse($response);
+
+        } catch (\Exception $exception) {
+            $this->addToResponse($exception->getMessage());
+        }
 
     }
 
@@ -103,6 +136,9 @@ class AwsLambdaExamples {
 
     public function dynamoDbPutObject($movies)
     {
+
+        $this->checkEnv('AWS_DYNAMODB_TABLENAME');
+
         $marshaler = new Marshaler();
 
         $tableName = getenv('AWS_DYNAMODB_TABLENAME');
@@ -130,12 +166,11 @@ class AwsLambdaExamples {
 
                 $result = $this->dynamoDbClient->putItem($params);
                 $this->addToResponse("Added movie: " . $movie['year'] . " " . $movie['title']);
+                $this->addToResponse($result);
 
-            } catch (DynamoDbException $e) {
+            } catch (DynamoDbException $exception) {
 
-                echo "Unable to add movie:\n";
-                echo $e->getMessage() . "\n";
-                break;
+                $this->addToResponse($exception->getMessage());
 
             }
         }
@@ -143,21 +178,12 @@ class AwsLambdaExamples {
 
     public function lambdaSendPayload()
     {
-        if (false === getenv('AWS_LAMBDA_FUNCTION_NAME')) {
-            throw new InvalidArgumentException();
-        }
-
-        $lambdaClient = $this->sdk->createLambda([
-            'credentials' => [
-                'key'    => getenv('AWS_ACCESS_KEY'),
-                'secret' => getenv('AWS_SECRET'),
-            ]
-        ]);
+        $this->checkEnv(['AWS_LAMBDA_FUNCTION_NAME', 'AWS_ACCESS_KEY', 'AWS_SECRET']);
 
         $movieData = file_get_contents(__DIR__ . '/data/moviedata.json');
 
         try {
-            $result = $lambdaClient->invoke([
+            $result = $this->lambdaClient->invoke([
                 'FunctionName' => getenv('AWS_LAMBDA_FUNCTION_NAME'),
                 // 'InvocationType' => 'RequestResponse',
                 'Payload' => $movieData
