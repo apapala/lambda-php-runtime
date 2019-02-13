@@ -1,0 +1,15 @@
+<phpunit bootstrap="tests/phpunit.php">
+
+    <testsuites>
+        <testsuite name="all-tests">
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory>./src</directory>
+        </whitelist>
+    </filter>
+
+</phpunit>

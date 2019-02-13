@@ -7,11 +7,12 @@ use Aws\DynamoDb\Exception\DynamoDbException;
 use Aws\DynamoDb\Marshaler;
 use Aws\Lambda\LambdaClient;
 use Aws\Sdk;
+use Exception;
 use InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
 
 class AwsLambdaExamples {
-
+    
     const AWS_SDK_ARGS = [
         'region'   => 'us-east-1',
         'version'  => 'latest'
@@ -80,23 +81,6 @@ class AwsLambdaExamples {
         $this->s3PutObject();
         $this->dynamoDbPutObject(json_decode(file_get_contents(__DIR__ . '/data/moviedata.json'), true));
 
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     * @param string|array $env
-     */
-    private function checkEnv($env)
-    {
-        if (is_string($env)) {
-            $env = [$env];
-        }
-
-        foreach ($env as $value) {
-            if (false === getenv($value)) {
-                throw new InvalidArgumentException();
-            }
-        }
     }
 
     public function s3PutObject() {
@@ -190,9 +174,26 @@ class AwsLambdaExamples {
             ]);
 
             $this->addToResponse($result);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
 
             $this->addToResponse("There was an error: " . $exception->getMessage());
+        }
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @param string|array $env
+     */
+    private function checkEnv($env)
+    {
+        if (is_string($env)) {
+            $env = [$env];
+        }
+
+        foreach ($env as $value) {
+            if (false === getenv($value)) {
+                throw new InvalidArgumentException();
+            }
         }
     }
 }

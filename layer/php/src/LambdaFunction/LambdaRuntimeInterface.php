@@ -3,9 +3,11 @@
 namespace LambdaPHP\LambdaFunction;
 
 
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
+
 interface LambdaRuntimeInterface {
 
-
-    function getNextRequest();
-    function sendResponse($invocationId, $response);
+    public function getNextRequest();
+    public function sendResponse($invocationId, $response);
 }

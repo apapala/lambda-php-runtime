@@ -1,6 +1,8 @@
 <?php
 
+use GuzzleHttp\Client;
 use LambdaPHP\LambdaFunction;
+use LambdaPHP\LambdaFunction\LambdaEnv;
 use LambdaPHP\LambdaFunction\LambdaHandler;
 use LambdaPHP\LambdaFunction\LambdaRuntime;
 use Symfony\Component\Dotenv\Dotenv;
@@ -13,7 +15,7 @@ $dotenv->load(__DIR__ . '/../.env');
 // This is the request processing loop. Barring unrecoverable failure, this loop runs until the environment shuts down.
 do {
 
-    $runtime = new LambdaRuntime();
+    $runtime = new LambdaRuntime(new Client(), new LambdaEnv($_ENV));
 
     // Ask the runtime API for a request to handle.
     $request = $runtime->getNextRequest();

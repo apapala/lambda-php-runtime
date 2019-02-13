@@ -7,6 +7,9 @@ use LambdaPHP\LambdaFunction\FunctionInterface;
 
 class LocalFunction implements FunctionInterface {
 
+    /**
+     * @var array
+     */
     private $response;
 
     public function getRequest()

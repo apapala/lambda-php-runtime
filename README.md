@@ -59,3 +59,5 @@ PHP SDK don't have access to other AWS services through Lambda and AssumeRole, h
 - https://aws.amazon.com/blogs/apn/aws-lambda-custom-runtime-for-php-a-practical-example/
 - https://docs.aws.amazon.com/lambda/latest/dg/runtimes-api.html
 - https://docs.aws.amazon.com/lambda/latest/dg/current-supported-versions.html
+- https://aws.amazon.com/blogs/aws/new-for-aws-lambda-use-any-programming-language-and-share-common-components/
+- https://docs.aws.amazon.com/lambda/latest/dg/current-supported-versions.html#lambda-environment-variables

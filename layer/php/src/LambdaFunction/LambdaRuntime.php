@@ -3,12 +3,29 @@ namespace LambdaPHP\LambdaFunction;
 
 use GuzzleHttp\Client;
 
-class LambdaRuntime implements LambdaRuntimeInterface {
+class LambdaRuntime implements LambdaRuntimeInterface
+{
+    /**
+     * @var EnvInterface
+     */
+    private $env;
 
-    function getNextRequest()
+    /**
+     * @var Client
+     */
+    private $client;
+
+    public function __construct(Client $client, EnvInterface $env)
     {
-        $client = new Client();
-        $response = $client->get('http://' . $_ENV['AWS_LAMBDA_RUNTIME_API'] . '/2018-06-01/runtime/invocation/next');
+        $this->env = $env;
+        $this->client = $client;
+    }
+
+    public function getNextRequest()
+    {
+        $awsLambdaRuntimeApi = $this->env->getenv('AWS_LAMBDA_RUNTIME_API');
+
+        $response = $this->client->get('http://' . $awsLambdaRuntimeApi . '/2018-06-01/runtime/invocation/next');
 
         return [
             'code' => $response->getStatusCode(),
@@ -17,17 +34,18 @@ class LambdaRuntime implements LambdaRuntimeInterface {
         ];
     }
 
-    function sendResponse($invocationId, $response)
+    public function sendResponse($invocationId, $response)
     {
+        $awsLambdaRuntimeApi = $this->env->getenv('AWS_LAMBDA_RUNTIME_API');
 
-        $client = new Client();
-        $client->post(
-            'http://' . $_ENV['AWS_LAMBDA_RUNTIME_API'] . '/2018-06-01/runtime/invocation/' . $invocationId . '/response',
+        $this->client->post(
+            'http://' . $awsLambdaRuntimeApi . '/2018-06-01/runtime/invocation/' . $invocationId . '/response',
             [
                 'form_params' => [
                     'body' => $response
                 ]
             ]
         );
+
     }
 }
