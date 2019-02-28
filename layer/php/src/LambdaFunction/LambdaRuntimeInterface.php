@@ -2,12 +2,14 @@
 
 namespace LambdaPHP\LambdaFunction;
 
-
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
-
 interface LambdaRuntimeInterface {
 
     public function getNextRequest();
-    public function sendResponse($invocationId, $response);
+    public function sendResponse($response);
+    public function setUp();
+    public function getPayload();
+    public function getHandler() : string;
+    public function getRequest();
+
+
 }

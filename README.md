@@ -61,3 +61,4 @@ PHP SDK don't have access to other AWS services through Lambda and AssumeRole, h
 - https://docs.aws.amazon.com/lambda/latest/dg/current-supported-versions.html
 - https://aws.amazon.com/blogs/aws/new-for-aws-lambda-use-any-programming-language-and-share-common-components/
 - https://docs.aws.amazon.com/lambda/latest/dg/current-supported-versions.html#lambda-environment-variables
+- https://serverless.com/framework/docs/providers/aws/events/apigateway/

@@ -6,6 +6,8 @@ interface FunctionInterface {
     public function addToResponse($response);
     public function getResponse();
 
+    public function getPayload();
+
     /**
      * @return array
      */

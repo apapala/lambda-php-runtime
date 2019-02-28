@@ -1,7 +1,6 @@
 <?php
 
 use GuzzleHttp\Client;
-use LambdaPHP\LambdaFunction;
 use LambdaPHP\LambdaFunction\LambdaEnv;
 use LambdaPHP\LambdaFunction\LambdaHandler;
 use LambdaPHP\LambdaFunction\LambdaRuntime;
@@ -16,20 +15,15 @@ $dotenv->load(__DIR__ . '/../.env');
 do {
 
     $runtime = new LambdaRuntime(new Client(), new LambdaEnv($_ENV));
-
     // Ask the runtime API for a request to handle.
-    $request = $runtime->getNextRequest();
+    // $request = $runtime->getNextRequest();
 
-    $output['_HANDLER'] = $_ENV['_HANDLER'];
-    $output['env'] = $_ENV;
-    $output['server'] = $_SERVER;
-    $output['request'] = $request;
+    $runtime->setUp();
 
-    $function = new LambdaFunction($request);
     $handler = new LambdaHandler();
-    $handler->run($function);
+    $handler->process($runtime);
 
-    $response = $function->getResponse();
+    $response = $handler->getResponse();
 
     // Obtain the function name from the _HANDLER environment variable and ensure the function's code is available.
     // $handlerFunction = array_slice(explode('.', $_ENV['_HANDLER']), -1)[0];
@@ -42,6 +36,8 @@ do {
 
     $output['response'] = $response;
 
+
+
     // Submit the response back to the runtime API.
-    $runtime->sendResponse($request['invocationId'], $output);
+    $runtime->sendResponse($response);
 } while (true);

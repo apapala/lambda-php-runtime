@@ -22,6 +22,6 @@ layers:
 
 functions:
   lambdaphp:
-    handler: testing-random-string
+    handler: LambdaFunction.invoke
     layers:
       - {Ref: PhpLambdaLayer}

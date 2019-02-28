@@ -1,8 +1,9 @@
 <?php
 
-namespace LambdaPHP;
+namespace LambdaPHP\Functions;
 
 use Aws\Sdk;
+use LambdaPHP\AwsLambdaExamples;
 use LambdaPHP\LambdaFunction\FunctionInterface;
 
 class LocalFunction implements FunctionInterface {
@@ -33,11 +34,16 @@ class LocalFunction implements FunctionInterface {
 
         $awsLambdaExamples = new AwsLambdaExamples($awsSdk, $this->getRequest());
         // $awsLambdaExamples->runLocalExamples();
-        $awsLambdaExamples->lambdaSendPayload();
+        $awsLambdaExamples->lambdaSendPayload(file_get_contents(__DIR__ . '/../data/moviedata.json'));
 //        $awsLambdaExamples->s3PutObject();
 
         $this->addToResponse($awsLambdaExamples->getResponse());
 
         return $awsLambdaExamples->getResponse();
+    }
+
+    public function getPayload()
+    {
+        return null;
     }
 }

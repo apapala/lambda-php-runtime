@@ -1,19 +1,19 @@
 <?php
 
-namespace LambdaPHP;
+namespace LambdaPHP\Functions;
 
 use Aws\Sdk;
+use LambdaPHP\AwsLambdaExamples;
 use LambdaPHP\LambdaFunction\FunctionInterface;
 
 class LambdaFunction implements FunctionInterface {
 
+    /**
+     * @var array
+     */
     private $request;
-    private $response;
 
-    public function __construct($request)
-    {
-        $this->request = $request;
-    }
+    private $response;
 
     /**
      * @return mixed
@@ -41,13 +41,10 @@ class LambdaFunction implements FunctionInterface {
         $this->response[] = $response;
     }
 
-    public function getPayload()
+    public function invoke($request = null)
     {
-        return $this->request['payload'];
-    }
+        $this->setRequest($request);
 
-    public function invoke()
-    {
         $awsSdk = new Sdk(AwsLambdaExamples::AWS_SDK_ARGS);
 
         $awsLambdaExamples = new AwsLambdaExamples($awsSdk, $this->getRequest());
@@ -55,5 +52,12 @@ class LambdaFunction implements FunctionInterface {
         $awsLambdaExamples->s3PutObject();
 
         $this->addToResponse($awsLambdaExamples->getResponse());
+
+        return $this->getResponse();
+    }
+
+    public function getPayload()
+    {
+        return $this->getRequest()['payload'];
     }
 }

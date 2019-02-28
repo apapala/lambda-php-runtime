@@ -12,7 +12,7 @@ use InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
 
 class AwsLambdaExamples {
-    
+
     const AWS_SDK_ARGS = [
         'region'   => 'us-east-1',
         'version'  => 'latest'
@@ -160,11 +160,13 @@ class AwsLambdaExamples {
         }
     }
 
-    public function lambdaSendPayload()
+    public function lambdaSendPayload($movieData = null)
     {
         $this->checkEnv(['AWS_LAMBDA_FUNCTION_NAME', 'AWS_ACCESS_KEY', 'AWS_SECRET']);
 
-        $movieData = file_get_contents(__DIR__ . '/data/moviedata.json');
+        if (null === $movieData) {
+            $movieData = file_get_contents(__DIR__ . '/data/moviedata.json');
+        }
 
         try {
             $result = $this->lambdaClient->invoke([
