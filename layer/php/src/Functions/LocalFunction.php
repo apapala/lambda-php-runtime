@@ -4,36 +4,21 @@ namespace LambdaPHP\Functions;
 
 use Aws\Sdk;
 use LambdaPHP\Examples\AwsLambdaExamples;
-use LambdaPHP\LambdaFunction\FunctionInterface;
+use LambdaPHP\LambdaFunction\AbstractLambdaFunction;
 
-class LocalFunction implements FunctionInterface {
-
-    /**
-     * @var array
-     */
-    private $response;
-
+class LocalFunction extends AbstractLambdaFunction
+{
     public function getRequest()
     {
         return null;
     }
 
-    public function addToResponse($response)
-    {
-        $this->response[] = $response;
-    }
-
-    public function getResponse()
-    {
-        return $this->response;
-    }
-
-    public function invoke()
+    public function invoke($request = null)
     {
         $awsSdk = new Sdk(AwsLambdaExamples::AWS_SDK_ARGS);
 
         $awsLambdaExamples = new AwsLambdaExamples($awsSdk, $this->getRequest());
-        // $awsLambdaExamples->runLocalExamples();
+//        $awsLambdaExamples->runLocalExamples();
         $awsLambdaExamples->lambdaSendPayload(file_get_contents(__DIR__ . '/../data/moviedata.json'));
 //        $awsLambdaExamples->s3PutObject();
 

@@ -4,42 +4,9 @@ namespace LambdaPHP\Functions;
 
 use Aws\Sdk;
 use LambdaPHP\Examples\AwsLambdaExamples;
-use LambdaPHP\LambdaFunction\FunctionInterface;
+use LambdaPHP\LambdaFunction\AbstractLambdaFunction;
 
-class LambdaFunction implements FunctionInterface {
-
-    /**
-     * @var array
-     */
-    private $request;
-
-    private $response;
-
-    /**
-     * @return mixed
-     */
-    public function getRequest()
-    {
-        return $this->request;
-    }
-
-    /**
-     * @param mixed $request
-     */
-    public function setRequest($request)
-    {
-        $this->request = $request;
-    }
-
-    public function getResponse()
-    {
-        return $this->response;
-    }
-
-    public function addToResponse($response)
-    {
-        $this->response[] = $response;
-    }
+class LambdaFunction extends AbstractLambdaFunction {
 
     public function invoke($request = null)
     {
@@ -54,10 +21,5 @@ class LambdaFunction implements FunctionInterface {
         $this->addToResponse($awsLambdaExamples->getResponse());
 
         return $this->getResponse();
-    }
-
-    public function getPayload()
-    {
-        return $this->getRequest()['payload'];
     }
 }

@@ -11,13 +11,11 @@ require __DIR__ . '/../vendor/autoload.php';
 $dotenv = new Dotenv();
 $dotenv->load(__DIR__ . '/../.env');
 
+$runtime = new LambdaRuntime(new Client(), new LambdaEnv($_ENV));
+// Ask the runtime API for a request to handle.
+
 // This is the request processing loop. Barring unrecoverable failure, this loop runs until the environment shuts down.
 do {
-
-    $runtime = new LambdaRuntime(new Client(), new LambdaEnv($_ENV));
-    // Ask the runtime API for a request to handle.
-    // $request = $runtime->getNextRequest();
-
     $runtime->setUp();
 
     $handler = new LambdaHandler();
@@ -35,8 +33,6 @@ do {
     // $response = handler($lambdaFunction);
 
     $output['response'] = $response;
-
-
 
     // Submit the response back to the runtime API.
     $runtime->sendResponse($response);

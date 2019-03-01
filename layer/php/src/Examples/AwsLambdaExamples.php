@@ -79,7 +79,7 @@ class AwsLambdaExamples {
     public function runLocalExamples()
     {
         $this->s3PutObject();
-        $this->dynamoDbPutObject(json_decode(file_get_contents(__DIR__ . '/data/moviedata.json'), true));
+        $this->dynamoDbPutObject(json_decode(file_get_contents(__DIR__ . '/../data/moviedata.json'), true));
 
     }
 

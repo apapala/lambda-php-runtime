@@ -19,9 +19,12 @@ provider:
 layers:
   php:
     path: layer/php
+  bin:
+    path: layer/bin
 
 functions:
   lambdaphp:
     handler: LambdaFunction.invoke
     layers:
       - {Ref: PhpLambdaLayer}
+      - {Ref: BinLambdaLayer}
