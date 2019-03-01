@@ -2,8 +2,7 @@
 
 namespace LambdaPHP\LambdaFunction;
 
-
-class LocalHandler implements FunctionHandlerInterface
+class LocalHandler extends AbstractLambdaHandler
 {
     private $response;
 
@@ -21,10 +20,5 @@ class LocalHandler implements FunctionHandlerInterface
     public function getFunction()
     {
         return 'invoke';
-    }
-
-    public function getResponse()
-    {
-        return $this->response;
     }
 }

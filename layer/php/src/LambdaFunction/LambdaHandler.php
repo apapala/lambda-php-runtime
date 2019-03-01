@@ -2,16 +2,8 @@
 
 namespace LambdaPHP\LambdaFunction;
 
-
-use InvalidArgumentException;
-
-class LambdaHandler implements FunctionHandlerInterface {
-
-    private $function;
-
-    private $class;
-
-    private $response;
+class LambdaHandler extends AbstractLambdaHandler
+{
 
     /**
      * @param LambdaRuntimeInterface|null $runtime
@@ -21,7 +13,7 @@ class LambdaHandler implements FunctionHandlerInterface {
     {
         $handler = $runtime->getHandler();
 
-        $parts =  explode('.', $handler);
+        $parts = explode('.', $handler);
         $this->class = $parts[0];
         $this->function = $parts[1];
 
@@ -29,30 +21,8 @@ class LambdaHandler implements FunctionHandlerInterface {
 
         $this->response = call_user_func([new $className, $this->getFunction()], $runtime->getRequest());
 
-        return $this->response;
+        return $this->getResponse();
     }
 
-    public function getClass()
-    {
-        if (empty($this->class)) {
-            throw new InvalidArgumentException();
-        }
-
-        return $this->class;
-    }
-
-    public function getFunction()
-    {
-        if (empty($this->function)) {
-            throw new InvalidArgumentException();
-        }
-
-        return $this->function;
-    }
-
-    public function getResponse()
-    {
-        return $this->response;
-    }
 }
 

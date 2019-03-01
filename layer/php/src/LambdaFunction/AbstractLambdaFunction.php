@@ -10,6 +10,9 @@ abstract class AbstractLambdaFunction
      */
     private $request;
 
+    /**
+     * @var array
+     */
     private $response;
 
     /**
