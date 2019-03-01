@@ -1,6 +1,6 @@
 <?php
 
-namespace LambdaPHP;
+namespace LambdaPHP\Examples;
 
 use Aws\DynamoDb\DynamoDbClient;
 use Aws\DynamoDb\Exception\DynamoDbException;

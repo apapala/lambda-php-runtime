@@ -3,7 +3,7 @@
 namespace LambdaPHP\Functions;
 
 use Aws\Sdk;
-use LambdaPHP\AwsLambdaExamples;
+use LambdaPHP\Examples\AwsLambdaExamples;
 use LambdaPHP\LambdaFunction\FunctionInterface;
 
 class LocalFunction implements FunctionInterface {
